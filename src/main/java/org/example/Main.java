@@ -7,21 +7,24 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner reader = new Scanner(System.in);
+        LogManager logMgr = new LogManager();
         int menuOpt;
 
         do {
             printMenu();
             menuOpt = getMenuOption(reader);
 
-            optionMgr(menuOpt);
+            optionMgr(menuOpt, reader, logMgr);
 
         } while (menuOpt != 6);
     }
 
-    private static void optionMgr(int option) {
+    private static void optionMgr(int option, Scanner reader, LogManager logMgr) {
         switch (option) {
             case 1:
-                // TODO LOAD FILE
+                System.out.print("Nombre del fichero: ");
+                String file = reader.next();
+                logMgr.loadLogs(file);
                 break;
             case 2:
                 // TODO FILTER FILE
@@ -51,7 +54,8 @@ public class Main {
         System.out.println("3. Exportar filtrado a XML");
         System.out.println("4. Exportar filtrado a JSON");
         System.out.println("5. Resetear filtrado");
-        System.out.println("6. Salir");
+        System.out.println("6. Mostrar Logs");
+        System.out.println("7. Salir");
         System.out.print("> ");
 
     }

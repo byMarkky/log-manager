@@ -1,4 +1,6 @@
-package org.example;
+package org.marco;
+
+import org.marco.exceptions.InvalidMenuEntryException;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -41,6 +43,9 @@ public class Main {
             case 6:
                 System.out.println("Saliendo...");
                 break;
+            case 7:
+                logMgr.showLogs();  // Debug only
+                break;
             default:
                 System.out.println("Opcion desconocida.");
                 break;
@@ -54,8 +59,7 @@ public class Main {
         System.out.println("3. Exportar filtrado a XML");
         System.out.println("4. Exportar filtrado a JSON");
         System.out.println("5. Resetear filtrado");
-        System.out.println("6. Mostrar Logs");
-        System.out.println("7. Salir");
+        System.out.println("6. Salir");
         System.out.print("> ");
 
     }
@@ -66,7 +70,7 @@ public class Main {
         try {
             opt = reader.nextInt();
         } catch (InputMismatchException e) {
-            System.err.println("[ERROR] Opcion del menu incorrecta.");
+            throw new InvalidMenuEntryException();
         }
 
         return opt;

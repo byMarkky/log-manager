@@ -1,4 +1,4 @@
-package org.example;
+package org.marco;
 
 public class Log {
     private final String date;

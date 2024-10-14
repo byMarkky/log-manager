@@ -1,4 +1,6 @@
-package org.example;
+package org.marco;
+
+import org.marco.exceptions.InvalidFileException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -32,13 +34,14 @@ public class LogManager {
                 
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new InvalidFileException();
         }
     }
 
     private String[] formatLine(String line) {
         String[] res = new String[3];
-        Pattern pattern = Pattern.compile("\\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})]\\s*\\[(\\w+)\\]\\s*(.*)");
+        String regex = "\\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})]\\s*\\[(\\w+)\\]\\s*(.*)";
+        Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line);
         if (matcher.matches()) {
             res[0] = matcher.group(1);

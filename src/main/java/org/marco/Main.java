@@ -1,4 +1,6 @@
-package org.example;
+package org.marco;
+
+import org.marco.exceptions.InvalidMenuEntryException;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -7,21 +9,24 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner reader = new Scanner(System.in);
+        LogManager logMgr = new LogManager();
         int menuOpt;
 
         do {
             printMenu();
             menuOpt = getMenuOption(reader);
 
-            optionMgr(menuOpt);
+            optionMgr(menuOpt, reader, logMgr);
 
         } while (menuOpt != 6);
     }
 
-    private static void optionMgr(int option) {
+    private static void optionMgr(int option, Scanner reader, LogManager logMgr) {
         switch (option) {
             case 1:
-                // TODO LOAD FILE
+                System.out.print("Nombre del fichero: ");
+                String file = reader.next();
+                logMgr.loadLogs(file);
                 break;
             case 2:
                 // TODO FILTER FILE
@@ -37,6 +42,9 @@ public class Main {
                 break;
             case 6:
                 System.out.println("Saliendo...");
+                break;
+            case 7:
+                logMgr.showLogs();  // Debug only
                 break;
             default:
                 System.out.println("Opcion desconocida.");
@@ -62,7 +70,7 @@ public class Main {
         try {
             opt = reader.nextInt();
         } catch (InputMismatchException e) {
-            System.err.println("[ERROR] Opcion del menu incorrecta.");
+            throw new InvalidMenuEntryException();
         }
 
         return opt;

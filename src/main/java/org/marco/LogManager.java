@@ -12,11 +12,30 @@ import java.util.regex.Pattern;
 public class LogManager {
 
     private List<Log> logs;
+    private List<Log> currentLogs;
     private List<String> incorrectLogs;
 
     LogManager() {
         this.logs = new ArrayList<>();
+        this.currentLogs = new ArrayList<>();
         this.incorrectLogs = new ArrayList<>();
+    }
+
+    public void filter(LogLevel filterOption) {
+        this.currentLogs.clear();
+        if (filterOption == null) {
+            for (Log log : this.logs) {
+                this.currentLogs.add(log);
+                System.out.println(log.pretty());
+            }
+        } else {
+            for (Log log : this.logs) {
+                if (log.getLevel().equals(filterOption)) {
+                    this.currentLogs.add(log);
+                    System.out.println(log.pretty());
+                }
+            }
+        }
     }
 
     public void loadLogs(String fileName) {
@@ -28,7 +47,9 @@ public class LogManager {
             while ((line = br.readLine()) != null) {
                 String[] splited = formatLine(line);
 
-                this.logs.add(new Log(splited[0], splited[1], splited[2]));
+                Log log = new Log(splited[0], splited[1], splited[2]);
+                this.logs.add(log);
+                this.currentLogs.add(log);
 
                 // TODO Implement the validation of the log
                 
@@ -53,11 +74,11 @@ public class LogManager {
     }
 
     public void showLogs() {
-        if (this.logs.isEmpty()) {
+        if (this.currentLogs.isEmpty()) {
             System.out.println("No logs at the moment");
             return;
         }
-        for (Log log : this.logs) {
+        for (Log log : this.currentLogs) {
             System.out.println(log.pretty());
         }
     }

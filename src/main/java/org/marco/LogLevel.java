@@ -1,5 +1,8 @@
 package org.marco;
 
+/**
+ * Enum to represent the level of the logs
+ */
 public enum LogLevel {
     INFO,
     WARNING,

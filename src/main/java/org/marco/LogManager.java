@@ -9,10 +9,17 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class to manage all the logic of the logs
+ * @version 1.0
+ * @since 1.0
+ * @see Log
+ * @see LogLevel
+ */
 public class LogManager {
 
     private List<Log> logs;
-    private List<Log> currentLogs;
+    private final List<Log> currentLogs;
     private List<String> incorrectLogs;
 
     LogManager() {
@@ -21,23 +28,35 @@ public class LogManager {
         this.incorrectLogs = new ArrayList<>();
     }
 
+    /**
+     * Method to filter the logs by the LogLevel
+     * @param filterOption LogLevel Object to filter
+     */
     public void filter(LogLevel filterOption) {
         this.currentLogs.clear();
+
+        // If filter is null, do not filter the logs
         if (filterOption == null) {
             for (Log log : this.logs) {
                 this.currentLogs.add(log);
                 System.out.println(log.pretty());
             }
-        } else {
-            for (Log log : this.logs) {
-                if (log.getLevel().equals(filterOption)) {
-                    this.currentLogs.add(log);
-                    System.out.println(log.pretty());
-                }
+            return;
+        }
+
+        // Else filter the logs by the level
+        for (Log log : this.logs) {
+            if (log.getLevel().equals(filterOption)) {
+                this.currentLogs.add(log);
+                System.out.println(log.pretty());
             }
         }
     }
 
+    /**
+     * Method to load the logs from the file given by the user
+     * @param fileName Name of the file
+     */
     public void loadLogs(String fileName) {
         File file = new File(fileName);
 
@@ -59,6 +78,23 @@ public class LogManager {
         }
     }
 
+    /**
+     * Method to format the log line with Patern<br>
+     * --- REGEX EXPLANATION ---<br>
+     * We want to dispatch this line format from the log file:<br>
+     * [YYYY-MM-dd HH:mm:ss] [LEVEL] Message<br>
+     * So, the first part get the timestamp with:<br>
+     * - \\d{N}: matches exactly N digits<br>
+     * To get the leve just use:<br>
+     * - \\w+: that matches one or N word characters<br>
+     * And finally, to get the message just matches all the content with:<br>
+     * - (.*)<br>
+     * Between the timestamp, the log level and the message can be N spaces
+     * that can be removed with:<br>
+     * - \\s+: matches zero or N spaces<br>
+     * @param line Line read form the file
+     * @return Vector of strings formated
+     */
     private String[] formatLine(String line) {
         String[] res = new String[3];
         String regex = "\\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})]\\s*\\[(\\w+)\\]\\s*(.*)";

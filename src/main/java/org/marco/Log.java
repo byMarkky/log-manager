@@ -1,5 +1,11 @@
 package org.marco;
 
+/**
+ * Method to encapsulate the log data
+ * @version 1.0
+ * @see LogManager
+ * @see LogLevel
+ */
 public class Log {
     private final String date;
     private final LogLevel level;
@@ -29,6 +35,10 @@ public class Log {
         return msg;
     }
 
+    /**
+     * Method to show the string in a pretty form
+     * @return pretty string :)
+     */
     public String pretty() {
         return String.format("[%s] [%s] %s", this.date, this.level.toString(), this.msg);
     }

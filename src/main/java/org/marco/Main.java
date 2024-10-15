@@ -61,7 +61,6 @@ public class Main {
         int opt;
         try {
             opt = reader.nextInt();
-
             switch (opt) {
                 case 1:
                     filter = LogLevel.values()[0];
@@ -78,7 +77,6 @@ public class Main {
                     System.out.println("Esa opcion no existe.");
                     break;
             }
-
         } catch (InputMismatchException e) {
             throw new InvalidMenuEntryException();
         }

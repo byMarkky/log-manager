@@ -7,6 +7,9 @@ import org.marco.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is only to export the logs in an XML file
+ */
 @XmlRootElement(name = "logAplicacion")
 public class Wrapper {
     private List<Log> logs = new ArrayList<>();
@@ -27,3 +30,4 @@ public class Wrapper {
         this.logs = logs;
     }
 }
+

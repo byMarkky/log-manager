@@ -6,6 +6,8 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 import org.marco.exceptions.InvalidFileException;
+import org.marco.interfaces.ExportJSON;
+import org.marco.interfaces.ExportXML;
 import org.marco.utils.Wrapper;
 
 import java.io.*;
@@ -14,7 +16,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,9 +26,9 @@ import java.util.regex.Pattern;
  * @see Log
  * @see LogLevel
  */
-public class LogManager {
+public class LogManager implements ExportXML, ExportJSON {
 
-    private List<Log> logs;
+    private final List<Log> logs;
     private final List<Log> currentLogs;
     private int incorrectLines;
 
@@ -41,6 +42,7 @@ public class LogManager {
      * Method to export the current logs to JSON format using GSON
      * @param fileName Name of the file to export the logs
      */
+    @Override
     public void exportJSON(String fileName) {
         // Use this initialization instead new Gson() to pretty print the json
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -53,6 +55,11 @@ public class LogManager {
         }
     }
 
+    /**
+     * Export the Logs to XML using JAXB
+     * @param fileName Name of the file
+     */
+    @Override
     public void exportXML(String fileName) {
         try {
             JAXBContext context = JAXBContext.newInstance(Wrapper.class);
@@ -161,6 +168,11 @@ public class LogManager {
         }
     }
 
+    /**
+     * Validate if the string given can be a valid Log
+     * @param log Parts of the log candidate
+     * @return if is a valid log candidate
+     */
     private boolean validateLog(String[] log) {
 
         // If the log level does not exist
@@ -179,10 +191,6 @@ public class LogManager {
 
     public List<Log> getLogs() {
         return logs;
-    }
-
-    public void setLogs(List<Log> logs) {
-        this.logs = logs;
     }
 
     @Override

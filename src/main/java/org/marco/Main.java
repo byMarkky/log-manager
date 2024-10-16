@@ -19,6 +19,8 @@ public class Main {
             optionMgr(menuOpt, reader, logMgr);
 
         } while (menuOpt != 6);
+
+        reader.close();
     }
 
     private static void optionMgr(int option, Scanner reader, LogManager logMgr) {
@@ -43,9 +45,6 @@ public class Main {
                 break;
             case 6:
                 System.out.println("Saliendo...");
-                break;
-            case 7:
-                logMgr.showLogs();  // Debug only
                 break;
             default:
                 System.out.println("Opcion desconocida.");
@@ -105,7 +104,7 @@ public class Main {
     }
 
     private static int getMenuOption(Scanner reader) {
-        int opt = 0;
+        int opt;
 
         try {
             opt = reader.nextInt();

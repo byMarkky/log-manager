@@ -1,5 +1,7 @@
 package org.marco;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
@@ -30,6 +32,22 @@ public class LogManager {
         this.logs = new ArrayList<>();
         this.currentLogs = new ArrayList<>();
         this.incorrectLogs = new ArrayList<>();
+    }
+
+    /**
+     * Method to export the current logs to JSON format using GSON
+     * @param fileName Name of the file to export the logs
+     */
+    public void exportJSON(String fileName) {
+        // Use this initialization instead new Gson() to pretty print the json
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        File file = new File(fileName);
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            bw.write(gson.toJson(this.currentLogs));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void exportXML(String fileName) {

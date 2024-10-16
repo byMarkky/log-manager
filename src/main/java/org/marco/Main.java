@@ -36,7 +36,7 @@ public class Main {
                 logMgr.exportXML("logs.xml");
                 break;
             case 4:
-                // TODO EXPORT TO JSON
+                logMgr.exportJSON("logs.json");
                 break;
             case 5:
                 logMgr.filter(null);

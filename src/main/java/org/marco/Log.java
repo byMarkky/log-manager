@@ -1,5 +1,6 @@
 package org.marco;
 
+import com.google.gson.annotations.SerializedName;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
@@ -11,9 +12,15 @@ import jakarta.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Log {
+
+    @SerializedName("fechaHora")
     private final String date;
-    private final LogLevel level;
+
+    @SerializedName("nivel")
     private final String msg;
+
+    @SerializedName("mensaje")
+    private final LogLevel level;
 
     public Log(String date, LogLevel level, String msg) {
         this.date = date;

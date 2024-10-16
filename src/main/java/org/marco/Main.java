@@ -39,7 +39,7 @@ public class Main {
                 // TODO EXPORT TO JSON
                 break;
             case 5:
-                // TODO RESET FILTER
+                logMgr.filter(null);
                 break;
             case 6:
                 System.out.println("Saliendo...");

@@ -1,11 +1,15 @@
 package org.marco;
 
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 /**
  * Method to encapsulate the log data
  * @version 1.0
  * @see LogManager
  * @see LogLevel
  */
+@XmlRootElement
 public class Log {
     private final String date;
     private final LogLevel level;
@@ -23,14 +27,21 @@ public class Log {
         this.msg = msg;
     }
 
+    public Log(){
+        this.date = null;
+        this.level = null;
+        this.msg = null;
+    }
+
+    @XmlElement(name = "fechaHora")
     public String getDate() {
         return date;
     }
-
+    @XmlElement(name = "nivel")
     public LogLevel getLevel() {
         return level;
     }
-
+    @XmlElement(name = "mensaje")
     public String getMsg() {
         return msg;
     }

@@ -33,7 +33,7 @@ public class Main {
                 logMgr.filter(filter);
                 break;
             case 3:
-                // TODO EXPORT TO XML
+                logMgr.exportXML("logs.xml");
                 break;
             case 4:
                 // TODO EXPORT TO JSON

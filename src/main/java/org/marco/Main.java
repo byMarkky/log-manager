@@ -29,7 +29,8 @@ public class Main {
                 logMgr.loadLogs(file);
                 break;
             case 2:
-                // TODO FILTER FILE
+                LogLevel filter = selectFilter(reader);
+                logMgr.filter(filter);
                 break;
             case 3:
                 // TODO EXPORT TO XML
@@ -38,7 +39,7 @@ public class Main {
                 // TODO EXPORT TO JSON
                 break;
             case 5:
-                // TODO RESET FILTER
+                logMgr.filter(null);
                 break;
             case 6:
                 System.out.println("Saliendo...");
@@ -50,6 +51,45 @@ public class Main {
                 System.out.println("Opcion desconocida.");
                 break;
         }
+    }
+
+    // TODO Optimize the error management of this function
+    private static LogLevel selectFilter(Scanner reader) {
+        System.out.println("Puede filtrar por:");
+        LogLevel filter = null;
+        showFilterMenu();
+        int opt;
+        try {
+            opt = reader.nextInt();
+            switch (opt) {
+                case 1:
+                    filter = LogLevel.values()[0];
+                    break;
+                case 2:
+                    filter = LogLevel.values()[1];
+                    break;
+                case 3:
+                    filter = LogLevel.values()[2];
+                    break;
+                case 4:
+                    break;  // Return null
+                default:
+                    System.out.println("Esa opcion no existe.");
+                    break;
+            }
+        } catch (InputMismatchException e) {
+            throw new InvalidMenuEntryException();
+        }
+        return filter;
+    }
+
+    private static void showFilterMenu() {
+        int i = 1;
+        for (LogLevel level : LogLevel.values()) {
+            System.out.format("%d. %s\n", i++, level);
+        }
+        System.out.format("%d. Ninguno\n", i);
+        System.out.print("> ");
     }
 
     private static void printMenu() {

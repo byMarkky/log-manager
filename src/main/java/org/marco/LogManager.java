@@ -9,6 +9,9 @@ import org.marco.exceptions.InvalidFileException;
 import org.marco.utils.Wrapper;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,12 +29,12 @@ public class LogManager {
 
     private List<Log> logs;
     private final List<Log> currentLogs;
-    private List<String> incorrectLogs;
+    private int incorrectLines;
 
     LogManager() {
         this.logs = new ArrayList<>();
         this.currentLogs = new ArrayList<>();
-        this.incorrectLogs = new ArrayList<>();
+        this.incorrectLines = 0;
     }
 
     /**
@@ -99,9 +102,13 @@ public class LogManager {
             while ((line = br.readLine()) != null) {
                 String[] splited = formatLine(line);
 
-                Log log = new Log(splited[0], splited[1], splited[2]);
-                this.logs.add(log);
-                this.currentLogs.add(log);
+                if (validateLog(splited)) {
+                    Log log = new Log(splited[0], splited[1], splited[2]);
+                    this.logs.add(log);
+                    this.currentLogs.add(log);
+                } else {
+                    incorrectLines++;
+                }
 
                 // TODO Implement the validation of the log
                 
@@ -109,6 +116,8 @@ public class LogManager {
         } catch (IOException e) {
             throw new InvalidFileException();
         }
+
+        System.out.format("No se han podido cargar %d lineas debido a que estan mal formadas.\n", this.incorrectLines);
     }
 
     /**
@@ -153,16 +162,19 @@ public class LogManager {
     }
 
     private boolean validateLog(String[] log) {
-        // TODO Finish the implementation (re-do)
-        boolean isCorrect = false;
 
-        // Check date
+        // If the log level does not exist
+        if (!LogLevel.exists(log[1])) return false;
 
-        // Check level
-        String level = log[2];
-        // Check msg
-        String msg = log[3];
-        return Objects.equals(msg, "") || LogLevel.exists(level);
+        // Validate the date
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        try {
+            LocalDateTime.parse(log[0], formatter);
+        } catch (DateTimeParseException e) {
+            return false; // Return false if parsing fails
+        }
+
+        return true;
     }
 
     public List<Log> getLogs() {

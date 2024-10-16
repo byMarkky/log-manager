@@ -1,6 +1,10 @@
 package org.marco;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import org.marco.exceptions.InvalidFileException;
+import org.marco.utils.Wrapper;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,6 +30,17 @@ public class LogManager {
         this.logs = new ArrayList<>();
         this.currentLogs = new ArrayList<>();
         this.incorrectLogs = new ArrayList<>();
+    }
+
+    public void exportXML(String fileName) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(Wrapper.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            marshaller.marshal(new Wrapper(this.currentLogs), new File(fileName));
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
